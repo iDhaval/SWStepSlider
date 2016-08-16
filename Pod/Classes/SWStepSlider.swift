@@ -170,9 +170,9 @@ public class SWStepSlider: UIControl {
         
         let ctx = UIGraphicsGetCurrentContext()
         
-        CGContextSaveGState(ctx)
+        CGContextSaveGState(ctx!)
         // Draw ticks
-        CGContextSetFillColorWithColor(ctx, self.tickColor.CGColor)
+        CGContextSetFillColorWithColor(ctx!, self.tickColor.CGColor)
         
         for index in 0..<self.numberOfSteps {
             let x = self.trackOffset + CGFloat(index) * self.stepWidth - 0.5 * self.tickWidth
@@ -182,10 +182,10 @@ public class SWStepSlider: UIControl {
             let tickPath = UIBezierPath(rect: CGRect(x: x , y: y, width: self.tickWidth, height: self.tickHeight))
             
             // Fill the tick
-            CGContextAddPath(ctx, tickPath.CGPath)
-            CGContextFillPath(ctx)
+            CGContextAddPath(ctx!, tickPath.CGPath)
+            CGContextFillPath(ctx!)
         }
-        CGContextRestoreGState(ctx)
+        CGContextRestoreGState(ctx!)
     }
     
     public override func intrinsicContentSize() -> CGSize {
