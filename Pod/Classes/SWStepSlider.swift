@@ -68,7 +68,7 @@ public class SWStepSlider: UIControl {
                     self.accessibilityElements = [e]
                 }
                 if self.continuous {
-                    self.sendActionsForControlEvents(.ValueChanged)
+                    self.sendActions(for: .valueChanged)
                 }
             }
         }
@@ -85,7 +85,7 @@ public class SWStepSlider: UIControl {
     public var tickColor = UIColor(red: 152.0/255.0, green: 152.0/255.0, blue: 152.0/255.0, alpha: 1)
     
     let thumbLayer = CAShapeLayer()
-    var thumbFillColor = UIColor.whiteColor()
+    var thumbFillColor = UIColor.white()
     var thumbStrokeColor = UIColor(red: 222.0/255.0, green: 222.0/255.0, blue: 222.0/255.0, alpha: 1)
     var thumbDimension: CGFloat = 28
 
@@ -118,22 +118,22 @@ public class SWStepSlider: UIControl {
     }
     
     private func commonInit() {
-        self.trackLayer.backgroundColor = self.trackColor.CGColor
+        self.trackLayer.backgroundColor = self.trackColor.cgColor
         self.layer.addSublayer(trackLayer)
         
-        self.thumbLayer.backgroundColor = UIColor.clearColor().CGColor
-        self.thumbLayer.fillColor = self.thumbFillColor.CGColor
-        self.thumbLayer.strokeColor = self.thumbStrokeColor.CGColor
+        self.thumbLayer.backgroundColor = UIColor.clear().cgColor
+        self.thumbLayer.fillColor = self.thumbFillColor.cgColor
+        self.thumbLayer.strokeColor = self.thumbStrokeColor.cgColor
         self.thumbLayer.lineWidth = 0.5
         self.thumbLayer.frame = CGRect(x: 0, y: 0, width: self.thumbDimension, height: self.thumbDimension)
-        self.thumbLayer.path = UIBezierPath(ovalInRect: self.thumbLayer.bounds).CGPath
+        self.thumbLayer.path = UIBezierPath(ovalIn: self.thumbLayer.bounds).cgPath
         
         // Shadow
         self.thumbLayer.shadowOffset = CGSize(width: 0, height: 2)
-        self.thumbLayer.shadowColor = UIColor.blackColor().CGColor
+        self.thumbLayer.shadowColor = UIColor.black().cgColor
         self.thumbLayer.shadowOpacity = 0.3
         self.thumbLayer.shadowRadius = 2
-        self.thumbLayer.contentsScale = UIScreen.mainScreen().scale
+        self.thumbLayer.contentsScale = UIScreen.main().scale
         
         self.layer.addSublayer(self.thumbLayer)
         
@@ -160,19 +160,19 @@ public class SWStepSlider: UIControl {
         let thumbRect = CGRect(x: center.x - self.thumbDimension / 2, y: center.y - self.thumbDimension / 2, width: self.thumbDimension, height: self.thumbDimension)
         self.thumbLayer.frame = thumbRect
         if let e = self.thumbAccessabilityElement {
-            e.accessibilityFrame = self.convertRect(thumbRect, toView: nil)
+            e.accessibilityFrame = self.convert(thumbRect, to: nil)
             self.accessibilityElements = [e]
         }
     }
     
-    public override func drawRect(rect: CGRect) {
-        super.drawRect(rect)
+    public override func draw(_ rect: CGRect) {
+        super.draw(rect)
         
         let ctx = UIGraphicsGetCurrentContext()
         
-        CGContextSaveGState(ctx)
+        ctx?.saveGState()
         // Draw ticks
-        CGContextSetFillColorWithColor(ctx, self.tickColor.CGColor)
+        ctx?.setFillColor(self.tickColor.cgColor)
         
         for index in 0..<self.numberOfSteps {
             let x = self.trackOffset + CGFloat(index) * self.stepWidth - 0.5 * self.tickWidth
@@ -182,10 +182,10 @@ public class SWStepSlider: UIControl {
             let tickPath = UIBezierPath(rect: CGRect(x: x , y: y, width: self.tickWidth, height: self.tickHeight))
             
             // Fill the tick
-            CGContextAddPath(ctx, tickPath.CGPath)
-            CGContextFillPath(ctx)
+            ctx?.addPath(tickPath.cgPath)
+            ctx?.fillPath()
         }
-        CGContextRestoreGState(ctx)
+        ctx?.restoreGState()
     }
     
     public override func intrinsicContentSize() -> CGSize {
@@ -193,7 +193,7 @@ public class SWStepSlider: UIControl {
     }
     
     
-    public func setValueAndUpdateView(value: Int) {
+    public func setValueAndUpdateView(_ value: Int) {
         self.value = self.clipValue(value)
 
         CATransaction.begin()
@@ -209,8 +209,8 @@ public class SWStepSlider: UIControl {
     var dragging = false
     var originalValue: Int!
     
-    public override func beginTrackingWithTouch(touch: UITouch, withEvent event: UIEvent?) -> Bool {
-        let location = touch.locationInView(self)
+    public override func beginTracking(_ touch: UITouch, with event: UIEvent?) -> Bool {
+        let location = touch.location(in: self)
         self.originalValue = self.value
         
         print("touch \(location)")
@@ -226,8 +226,8 @@ public class SWStepSlider: UIControl {
         return self.dragging
     }
     
-    public override func continueTrackingWithTouch(touch: UITouch, withEvent event: UIEvent?) -> Bool {
-        let location = touch.locationInView(self)
+    public override func continueTracking(_ touch: UITouch, with event: UIEvent?) -> Bool {
+        let location = touch.location(in: self)
         
         let deltaLocation = location.x - self.previousLocation.x
         let deltaValue = self.deltaValue(deltaLocation)
@@ -250,22 +250,22 @@ public class SWStepSlider: UIControl {
         return true
     }
     
-    public override func endTrackingWithTouch(touch: UITouch?, withEvent event: UIEvent?) {
+    public override func endTracking(_ touch: UITouch?, with event: UIEvent?) {
         self.previousLocation = nil
         self.originalValue = nil
         self.dragging = false
         
         if self.continuous == false {
-            self.sendActionsForControlEvents(.ValueChanged)
+            self.sendActions(for: .valueChanged)
         }
     }
     
     // MARK: - Helper
-    func deltaValue(deltaLocation: CGFloat) -> Int {
+    func deltaValue(_ deltaLocation: CGFloat) -> Int {
         return Int(round(fabs(deltaLocation) / self.stepWidth))
     }
     
-    func clipValue(value: Int) -> Int {
+    func clipValue(_ value: Int) -> Int {
         return min(max(value, self.minimumValue), self.maximumValue)
     }
     
@@ -283,11 +283,11 @@ public class SWStepSlider: UIControl {
         return 1
     }
     
-    override public func accessibilityElementAtIndex(index: Int) -> AnyObject? {
+    override public func accessibilityElement(at index: Int) -> AnyObject? {
         return self.thumbAccessabilityElement
     }
     
-    override public func indexOfAccessibilityElement(element: AnyObject) -> Int {
+    override public func index(ofAccessibilityElement element: AnyObject) -> Int {
         return 0
     }
     
