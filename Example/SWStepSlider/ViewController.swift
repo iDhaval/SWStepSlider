@@ -21,7 +21,7 @@ class ViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
 
-    @IBAction func valueChanged(_ sender: SWStepSlider) {
+    @IBAction func valueChanged(sender: SWStepSlider) {
         print("value: \(sender.value)")
     }
 }
