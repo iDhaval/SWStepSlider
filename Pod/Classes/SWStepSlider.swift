@@ -85,7 +85,7 @@ public class SWStepSlider: UIControl {
     public var tickColor = UIColor(red: 152.0/255.0, green: 152.0/255.0, blue: 152.0/255.0, alpha: 1)
     
     let thumbLayer = CAShapeLayer()
-    var thumbFillColor = UIColor.white()
+    var thumbFillColor = UIColor.white
     var thumbStrokeColor = UIColor(red: 222.0/255.0, green: 222.0/255.0, blue: 222.0/255.0, alpha: 1)
     var thumbDimension: CGFloat = 28
 
@@ -121,7 +121,7 @@ public class SWStepSlider: UIControl {
         self.trackLayer.backgroundColor = self.trackColor.cgColor
         self.layer.addSublayer(trackLayer)
         
-        self.thumbLayer.backgroundColor = UIColor.clear().cgColor
+        self.thumbLayer.backgroundColor = UIColor.clear.cgColor
         self.thumbLayer.fillColor = self.thumbFillColor.cgColor
         self.thumbLayer.strokeColor = self.thumbStrokeColor.cgColor
         self.thumbLayer.lineWidth = 0.5
@@ -130,10 +130,10 @@ public class SWStepSlider: UIControl {
         
         // Shadow
         self.thumbLayer.shadowOffset = CGSize(width: 0, height: 2)
-        self.thumbLayer.shadowColor = UIColor.black().cgColor
+        self.thumbLayer.shadowColor = UIColor.black.cgColor
         self.thumbLayer.shadowOpacity = 0.3
         self.thumbLayer.shadowRadius = 2
-        self.thumbLayer.contentsScale = UIScreen.main().scale
+        self.thumbLayer.contentsScale = UIScreen.main.scale
         
         self.layer.addSublayer(self.thumbLayer)
         
@@ -188,7 +188,7 @@ public class SWStepSlider: UIControl {
         ctx?.restoreGState()
     }
     
-    public override func intrinsicContentSize() -> CGSize {
+    public override var intrinsicContentSize: CGSize {
         return CGSize(width: self.thumbDimension * CGFloat(self.numberOfSteps), height: self.thumbDimension)
     }
     
@@ -283,11 +283,11 @@ public class SWStepSlider: UIControl {
         return 1
     }
     
-    override public func accessibilityElement(at index: Int) -> AnyObject? {
+    override public func accessibilityElement(at index: Int) -> Any? {
         return self.thumbAccessabilityElement
     }
     
-    override public func index(ofAccessibilityElement element: AnyObject) -> Int {
+    override public func index(ofAccessibilityElement element: Any) -> Int {
         return 0
     }
     
